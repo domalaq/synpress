@@ -1229,6 +1229,17 @@ const metamask = {
       notificationPage,
       { waitForEvent: 'close' },
     );
+    await switchToMetamaskIfNotActive();
+    if ((await playwright
+      .metamaskWindow()
+      .locator(recipientPopupElements.popupCloseButton)
+      .count()) > 0) {
+      await playwright.waitAndClick(
+        recipientPopupElements.popupCloseButton,
+      )
+    }
+    await module.exports.closePopupAndTooltips();
+    await switchToCypressIfNotActive();
     return true;
   },
   async rejectToSwitchNetwork() {
